@@ -1,14 +1,14 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { User } from 'src/auth/schemas/user.schema';
 
-export class CreateBookDto {
-  @IsNotEmpty()
+export class updateBookDto {
+  @IsOptional()
   @IsString()
   title: string;
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   author: string;
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   price: number;
   user: User;
