@@ -13,12 +13,41 @@ export class RazorpayService {
       key_secret: process.env.RAZORPAY_API_SECRET, // Use environment variable
     });
   }
+  // async createOrder(orderDto: OrderDto) {
+  //   const options = {
+  //     amount: orderDto.amount * 100,
+  //     currency: 'INR',
+  //     receipt: 'order_rcptid_' + Date.now(),
+  //   };
+  //   const order = await this.razorpay.orders.create(options);
+
+  //   return order;
+  // }
   async createOrder(orderDto: OrderDto) {
+    const currentTimestamp = Math.floor(Date.now() / 1000); // Convert milliseconds to seconds
+    const oneDayInSeconds = 86400; // 24 hours * 60 minutes * 60 seconds
+    const oneDayFromNow = currentTimestamp + oneDayInSeconds;
+
     const options = {
-      amount: orderDto.amount * 100,
+      amount: orderDto.amount,
       currency: 'INR',
-      receipt: 'order_rcptid_' + Date.now(),
+      transfers: [
+        {
+          account: process.env.ACCOUNT_ID_1,
+          amount: orderDto.amount / 2,
+          currency: 'INR',
+          on_hold: 0,
+        },
+        {
+          account: process.env.ACCOUNT_ID_2,
+          amount: orderDto.amount / 2,
+          currency: 'INR',
+          on_hold: 1,
+          on_hold_until: oneDayFromNow,
+        },
+      ],
     };
+
     const order = await this.razorpay.orders.create(options);
 
     return order;

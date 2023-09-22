@@ -14,7 +14,7 @@ const Home = () => {
         const { data} = await axios.post("http://localhost:3000/razorpay", {
             amount
         })
-        console.log(key.data);
+        console.log(data);
         const options = {
             key:key.data,
             amount: data.amount,
